@@ -1,7 +1,7 @@
 #include <iostream>
-using namespace std::cout;
-using namespace std::cin;
-using namespace std::endl;
+using std::cout;
+using std::cin;
+using std::endl;
 struct Account{
 	int ac_num;
 	char name[10];
@@ -11,23 +11,34 @@ int SelectMenu();
 void Create_Account(Account &);
 void Deposit(Account *);
 void Withdraw(Account *);
+void Info(Account *, int);
 
 int main(void){
 	Account ac[100];
 	int num_people=0;
 
-	switch(SelectMenu()){
-		case 1:
-			Create_Account(ac[num_people]);
-			num_people++;
-			break;
-		case 2:
-			Deposit(ac);
-			break;
-		case 3:
-			Withdraw(ac);
-			break;
-		case 4:
+	while(1){
+		switch(SelectMenu()){
+			case 1:
+				Create_Account(ac[num_people]);
+				num_people++;
+				break;
+			case 2:
+				Deposit(ac);
+				break;
+			case 3:
+				Withdraw(ac);
+				break;
+			case 4:
+				Info(ac,num_people);
+				break;
+			case 5:
+				cout<<"프로그램 종료"<<endl;
+				return 0;
+			default: //잘못된 입력이라고 명시해주는 cout! 표기하는것이 좋다다
+				cout<<"잘못된 입력입니다"<<endl;
+			}
+	}
 }
 
 int SelectMenu(){
@@ -67,6 +78,11 @@ void Deposit(Account * acptr){
 		if(acptr[i].ac_num==tmp)
 			break;
 
+	if(i==100){ //잘못된 입력을 했을때의 예외처리
+		cout<<"잘못된 입력입니다!"<<endl;
+		return;
+	}
+
 	cout<<"입금액: ";
 	cin>>tmp;
 
@@ -85,6 +101,11 @@ void Withdraw(Account * acptr){
 	for(i=0;i<100;i++)
 		if(acptr[i].ac_num==tmp)
 			break;
+	
+	if(i==100){ //잘못된 입력을 했을때 예외처리
+		cout<<"잘못된 입력입니다!"<<endl;
+		return;
+	}
 
 	cout<<"출금액: ";
 	cin>>tmp;
@@ -92,4 +113,9 @@ void Withdraw(Account * acptr){
 	acptr[i].money -= tmp;
 
 	cout<<"출금완료"<<endl;
+}
+
+void Info(Account * acptr, int nm){
+	for(int i=0;i<nm;i++)
+		cout<<"계좌ID: "<<acptr[i].ac_num<<endl<<"이 름: "<<acptr[i].name<<endl<<"입금액: "<<acptr[i].money<<endl<<endl;
 }
